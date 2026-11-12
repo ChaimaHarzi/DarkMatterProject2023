@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    font-family: SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+    line-height: 1.1;
+    letter-spacing: 0em;
+    box-sizing: border-box;
+    /* `clip` (unlike `hidden`) doesn't turn <body> into a scroll container,
+       which would silently break every `position: sticky` effect on the page. */
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Keep anchored sections clear of the fixed header. */
+    scroll-padding-top: 5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-white text-black antialiased;
+  }
+
+  ::selection {
+    @apply bg-black text-white;
+  }
+
+  .bg-black ::selection {
+    @apply bg-white text-black;
+  }
+
+  /* Visible, consistent keyboard focus everywhere. */
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Small uppercase label above section titles: "— Services" */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.25em];
+  }
+  .eyebrow::before {
+    content: '';
+    @apply block h-px w-8 bg-current;
+  }
+
+  /* Brutalist buttons with an offset shadow that "presses" on hover. */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 border-2 px-6 py-3 text-base font-semibold leading-none
+      transition-all duration-200 ease-out disabled:pointer-events-none disabled:opacity-60;
+  }
+  .btn-dark {
+    @apply btn border-black bg-black text-white shadow-[-6px_6px_0_rgba(0,0,0,0.25)]
+      hover:-translate-x-0.5 hover:translate-y-0.5 hover:shadow-[-3px_3px_0_rgba(0,0,0,0.25)]
+      active:translate-x-0 active:translate-y-0 active:shadow-none;
+  }
+  .btn-light {
+    @apply btn border-white bg-white text-black shadow-[-6px_6px_0_rgba(255,255,255,0.3)]
+      hover:-translate-x-0.5 hover:translate-y-0.5 hover:shadow-[-3px_3px_0_rgba(255,255,255,0.3)]
+      active:translate-x-0 active:translate-y-0 active:shadow-none;
+  }
+  .btn-ghost-light {
+    @apply btn border-white/70 bg-transparent text-white hover:border-white hover:bg-white hover:text-black;
+  }
+
+  /* Form fields on dark backgrounds. */
+  .field {
+    @apply w-full border-2 border-white/20 bg-white/[0.04] px-4 py-3 text-base text-white placeholder:text-white/40
+      transition-colors duration-200 hover:border-white/40 focus:border-white focus:bg-white/[0.08] focus:outline-none;
+  }
+  .field[aria-invalid='true'] {
+    @apply border-red-400/80 focus:border-red-300;
+  }
+
+  /* Subtle animated reveal used by the hero. */
+  .fade-up {
+    animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scroll-hint {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 0.6;
+  }
+}
+
+.animate-scroll-hint {
+  animation: scroll-hint 1.8s ease-in-out infinite;
+}
